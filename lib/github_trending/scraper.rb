@@ -51,10 +51,8 @@ module Github
       def list_languages
         languages = []
         page = @agent.get(BASE_URL)
-        page.search('div.select-menu-item a').each do |content|
-          href = content.attributes['href'].value
-          # objective-c++ =>
-          language = href.match(/github.com\/trending\?l=(.+)/).to_a[1]
+        page.search('.language-filter-list + .select-menu span.select-menu-item-text').each do |content|
+          language = content.text
           languages << CGI.unescape(language) if language
         end
         languages
