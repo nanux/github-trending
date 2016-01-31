@@ -44,7 +44,6 @@ module Github
           project.description = content.search('.repo-list-description').text.gsub("\n", '').strip
           projects << project
         end
-        fail ScrapeException if projects.empty?
         projects
       end
 
@@ -82,13 +81,13 @@ module Github
 
       def extract_lang_and_star_from_meta(text)
         meta_data = text.split('•').map { |x| x.gsub("\n", '').strip }
-        if meta_data.size == 3
-          lang = meta_data[0]
-          star_count = meta_data[1].gsub(',', '').to_i
+        lang = meta_data[0]
+
+        if meta_data.size == 2
+          star_count = meta_data[1].gsub(' ', '').to_i
           [lang, star_count]
         else
-          star_count = meta_data[0].gsub(',', '').to_i
-          ['', star_count]
+          [lang, '']
         end
       end
     end
